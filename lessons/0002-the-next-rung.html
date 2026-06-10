@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0002 · The Next Rung</title>
+<style>
+  :root{
+    --ink:#1f1b16; --muted:#6b5f52; --paper:#fbf7f0; --card:#ffffff;
+    --line:#e7ddcf; --accent:#9a6a3a; --accent-soft:#f1e4d3; --gold:#c08a2d;
+    --good:#3c7a4e; --warn:#b07a1e; --bad:#a8432f; --retain:#8a6d3b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:17px/1.7 "Iowan Old Style","Palatino Linotype",Georgia,serif;padding:0 20px 100px}
+  .wrap{max-width:760px;margin:0 auto}
+  .mission{background:var(--accent-soft);border:1px solid #e6d3b8;border-radius:0 0 14px 14px;
+    border-top:none;padding:12px 18px;font:14px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5e4a2c;margin-bottom:34px}
+  .mission b{color:var(--accent)}
+  .eyebrow{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--retain);margin-top:40px}
+  h1{font-size:2.3rem;line-height:1.12;margin:.25em 0 .15em}
+  .sub{color:var(--muted);font-size:1.12rem;margin:0 0 1.4rem}
+  .meta{font:13px ui-sans-serif,system-ui,sans-serif;color:var(--muted);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0;margin-bottom:2rem;display:flex;gap:18px;flex-wrap:wrap}
+  h2{font-size:1.5rem;margin:2.6rem 0 .5rem}
+  h3{font-size:1.15rem;margin:1.6rem 0 .3rem}
+  p{margin:.6rem 0}
+  .lead{font-size:1.12rem}
+  .stat{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--gold);
+    border-radius:10px;padding:14px 20px;margin:1.2rem 0;font-size:1.05rem}
+  .stat b{color:var(--accent);font-size:1.1em}
+  /* ladder */
+  .ladder{list-style:none;margin:1.2rem 0;padding:0;counter-reset:rung}
+  .ladder li{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:8px 0;
+    padding:12px 16px 12px 54px;position:relative;font:15px/1.5 ui-sans-serif,system-ui,sans-serif}
+  .ladder li::before{counter-increment:rung;content:counter(rung);position:absolute;left:14px;top:50%;
+    transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:var(--accent-soft);
+    color:var(--accent);font-weight:700;display:flex;align-items:center;justify-content:center}
+  .ladder b{color:var(--ink)}
+  .rented{border-left:5px solid #b9483a}.owned{border-left:5px solid var(--good)}
+  .badge{font:600 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:middle}
+  .badge.r{background:#f6e3df;color:#a8432f}.badge.o{background:#e3f0e6;color:#2c6b3e}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:1rem 0}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .pcard h4{margin:0 0 .3rem;font:600 14px ui-sans-serif,system-ui,sans-serif;color:var(--accent)}
+  .pcard p{margin:.2rem 0;font-size:.96rem}
+  .example{background:#f3ece0;border:1px dashed #d8c6a8;border-radius:12px;padding:18px 22px;margin:1.4rem 0}
+  .example ul{margin:.4rem 0 0;padding-left:1.2rem}
+  .example li{margin:.4rem 0}
+  /* lab */
+  .lab{background:var(--card);border:2px solid var(--retain);border-radius:16px;padding:24px;margin:1.6rem 0;box-shadow:0 6px 22px rgba(138,109,59,.12)}
+  .lab h3{margin-top:0;color:var(--retain)}
+  label.fld{display:block;font:600 13px ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:12px 0 4px}
+  select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;
+    font:1.05rem/1.4 "Iowan Old Style",Georgia,serif;background:#fffdf8;color:var(--ink)}
+  select{font-family:ui-sans-serif,system-ui,sans-serif;font-size:15px}
+  textarea{min-height:64px;resize:vertical}
+  textarea:focus,select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+  .readout{margin-top:16px;display:none}
+  .scorebar{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+  .scorenum{font:700 2rem ui-sans-serif,system-ui,sans-serif}
+  .scorelabel{font:600 14px ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .checks{list-style:none;margin:0;padding:0;font:15px ui-sans-serif,system-ui,sans-serif}
+  .checks li{padding:7px 0 7px 30px;position:relative;border-top:1px solid var(--line)}
+  .checks li::before{position:absolute;left:0;top:6px;font-size:1.05rem}
+  .checks li.ok::before{content:"\2713";color:var(--good)}
+  .checks li.no::before{content:"\2715";color:var(--bad)}
+  .checks li.mid::before{content:"\203B";color:var(--warn)}
+  .checks small{color:var(--muted);display:block}
+  .suggest{background:var(--accent-soft);border-radius:10px;padding:12px 16px;margin-top:12px;
+    font:14px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5e4a2c;display:none}
+  .suggest b{color:var(--accent)}
+  /* quiz */
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:1.4rem 0}
+  .q{margin:1rem 0}
+  .q p{font:600 1.05rem ui-sans-serif,system-ui,sans-serif;margin:.2rem 0 .6rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);
+    border-radius:9px;padding:10px 14px;margin:6px 0;font:15px ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--ink);transition:.12s}
+  .opt:hover{border-color:var(--gold)}
+  .opt.correct{background:#e3f0e6;border-color:var(--good);color:#23532f}
+  .opt.wrong{background:#f6e3df;border-color:var(--bad);color:#7a2a1c}
+  .fb{font:14px ui-sans-serif,system-ui,sans-serif;margin-top:6px;display:none;color:var(--muted)}
+  .task{background:var(--accent-soft);border:1px solid #e6d3b8;border-radius:14px;padding:20px 24px;margin:1.8rem 0}
+  .task h2{margin-top:0}.task ol{padding-left:1.2rem}
+  .ask{background:#fff;border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:10px;
+    padding:14px 20px;margin:1.6rem 0;font:15px ui-sans-serif,system-ui,sans-serif}
+  footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;font:14px ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  a{color:var(--accent)}
+  cite{display:block;font:12px ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:1.2rem}
+  @media(max-width:560px){.twocol{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="mission">
+    <b>Mission thread:</b> Lesson 0001 got strangers to <em>stop</em>. But a view you don't capture
+    is gone forever — the algorithm rents you that attention and can revoke it tomorrow. This is
+    Stage&nbsp;2 — <b>Retain</b> — of <a href="../reference/online-ministry-funnel.html">the funnel</a>:
+    turning a fleeting viewer into someone you can actually walk with toward an unbreakable family.
+  </div>
+
+  <div class="eyebrow">Lesson 0002 · Retain</div>
+  <h1>The Next Rung</h1>
+  <p class="sub">One clear invitation per post — moving each viewer exactly one step deeper, toward
+  a relationship you <em>own</em> instead of rent.</p>
+  <div class="meta">
+    <span>⏱ ~14 minutes</span><span>🎯 One skill: write a single, low-friction CTA</span><span>✅ Win: pick 1 owned home + 3 CTAs</span>
+  </div>
+
+  <p class="lead">A great hook with no next step is a leaky bucket. People feel something, then keep
+  scrolling and forget you by lunch. The fix isn't <em>more</em> asking — it's <strong>one</strong>
+  ask, pointing one rung deeper. The single most important version of that ask: move people from a
+  platform you <em>rent</em> to a place you <em>own</em>.</p>
+
+  <h2>Rented vs. owned — the whole game</h2>
+  <div class="twocol">
+    <div class="pcard">
+      <h4>🏚 Rented</h4>
+      <p>Followers, views, the For You page. The platform decides who sees you — organic reach can be
+      as low as <strong>~5%</strong> of your own followers, and an account can be throttled overnight.</p>
+    </div>
+    <div class="pcard">
+      <h4>🏡 Owned</h4>
+      <p>A text list, email list, or group chat. You reach these people directly. Church <strong>SMS
+      opens at ~98%</strong>. No one can take this audience from you.</p>
+    </div>
+  </div>
+  <div class="stat">
+    A community where members talk to <em>each other</em> — sharing prayer requests, life updates —
+    is worth <b>~10×</b> a page where only you post. Owning the audience isn't just safer; it's where
+    ministry actually happens.
+    <cite>MosesTab, "Church Communication Strategies"; SimpleTexting.</cite>
+  </div>
+
+  <h2>The depth ladder</h2>
+  <p>Picture every viewer on a ladder. Your job in any single post is <strong>not</strong> to drag
+  them to the top — it's to offer the <em>one</em> next rung. Asking for too big a leap gets ignored.</p>
+  <ol class="ladder">
+    <li class="rented"><b>Sees a clip</b> <span class="badge r">rented</span> — a stranger on the For You page</li>
+    <li class="rented"><b>Follows you</b> <span class="badge r">rented</span> — now in your orbit, but still the platform's to show</li>
+    <li class="rented"><b>Goes deeper on-platform</b> <span class="badge r">rented</span> — watches a full sermon, the podcast, a photo carousel</li>
+    <li class="owned"><b>Joins something you own</b> <span class="badge o">owned</span> — texts a keyword, joins the email list / group chat <em>(the pivotal rung)</em></li>
+    <li class="owned"><b>Enters the online study</b> <span class="badge o">owned</span> — a recurring gathering, real names, real presence</li>
+    <li class="owned"><b>In-person / discipleship</b> <span class="badge o">owned</span> — Mobile, or a group near them</li>
+  </ol>
+
+  <h2>The rule: one CTA per post</h2>
+  <p>Multiple asks split attention and people freeze — "comment, and follow, and check my bio, and
+  share" nets you nothing. <strong>Pick one</strong> conversion goal per post, matched to where that
+  viewer likely is on the ladder.</p>
+
+  <div class="twocol">
+    <div class="pcard">
+      <h4>To grow reach (rented)</h4>
+      <p>"<strong>Send this to someone</strong> who needs it." DM shares are the #1 algorithm signal —
+      this beats "like" CTAs for spreading.</p>
+      <p>"<strong>Follow for Part 2</strong>" — promise a continuation.</p>
+    </div>
+    <div class="pcard">
+      <h4>To capture (owned) — higher value</h4>
+      <p>"<strong>Comment the word HOME</strong> and I'll send you the full teaching." Keyword-in-comments
+      + a DM converts <strong>5–15%</strong> vs. ~1–3% for "link in bio."</p>
+      <p>"<strong>Text JOIN to ___</strong>" to get the weekly family devotional.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <strong>Dual delivery (non-negotiable):</strong> say the CTA aloud in the final 2–3 seconds
+    <em>and</em> put it on screen as bold text. Most people watch muted; an unspoken-or-unwritten CTA
+    is half-missed.
+    <ul>
+      <li>❌ "Anyway, hope that helped, see you next time."</li>
+      <li>✅ Spoken + on-screen: "Comment <strong>HOME</strong> — I'll send you the full message."</li>
+    </ul>
+  </div>
+
+  <!-- INTERACTIVE LAB -->
+  <div class="lab">
+    <h3>🔬 CTA Lab — pick a rung, write the ask, get scored</h3>
+    <p style="margin-top:0">Choose the next rung you want this post to drive, type your CTA, and the
+    lab checks it for the things that matter: one ask, low friction, owned-audience value, dual delivery.</p>
+
+    <label class="fld" for="goalSel">Where is this viewer, and where do you want them next?</label>
+    <select id="goalSel">
+      <option value="share">They just discovered me → I want them to SHARE it (grow reach)</option>
+      <option value="follow">They liked this one → I want them to FOLLOW (stay in orbit)</option>
+      <option value="deeper">They're curious → send them DEEPER on-platform (full sermon/podcast)</option>
+      <option value="owned">They're warm → get them onto something I OWN (text/email/group)</option>
+      <option value="study">They're committed → invite to the online STUDY</option>
+    </select>
+
+    <label class="fld" for="ctaInput">Your CTA (write it the way you'd say it):</label>
+    <textarea id="ctaInput" placeholder="e.g. Comment HOME and I'll send you the full teaching on building a whole family."></textarea>
+
+    <div class="readout" id="readout">
+      <div class="scorebar"><span class="scorenum" id="scoreNum">0</span><span class="scorelabel" id="scoreLabel">/ 4</span></div>
+      <ul class="checks" id="checks"></ul>
+    </div>
+    <div class="suggest" id="suggest"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" id="quiz">
+    <h3 style="margin-top:0">Quick gut-check</h3>
+
+    <div class="q" data-correct="1">
+      <p>1. Why is moving viewers to a text/email list the pivotal rung?</p>
+      <button class="opt">It makes your follower count go up faster.</button>
+      <button class="opt">It's an audience you own — reachable directly even if the algorithm turns on you.</button>
+      <button class="opt">It's required by TikTok's rules.</button>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-correct="2">
+      <p>2. A post ends with: "Like, comment, follow, share, and check my bio link!" The problem?</p>
+      <button class="opt">Not enough asks — add more.</button>
+      <button class="opt">The CTA should only be on screen, never spoken.</button>
+      <button class="opt">Too many asks — split attention kills action. Pick one.</button>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-correct="0">
+      <p>3. Best CTA to <em>capture</em> a warm viewer into an owned channel?</p>
+      <button class="opt">"Comment HOME and I'll send you the full teaching."</button>
+      <button class="opt">"Link in bio."</button>
+      <button class="opt">"Thanks for watching!"</button>
+      <div class="fb"></div>
+    </div>
+  </div>
+
+  <!-- TASK -->
+  <div class="task">
+    <h2>🎯 Your win this session</h2>
+    <ol>
+      <li><strong>Choose ONE owned home</strong> to start — the simplest you'll actually maintain: a
+        text keyword (e.g. SimpleTexting), a free email list, or a group chat. One. Not all.</li>
+      <li><strong>Write 3 CTAs</strong> for your next 3 posts. Each drives a <em>single</em> rung; at
+        least one should point to your new owned home. Run each through the CTA Lab.</li>
+      <li><strong>Bring them back to me</strong> with the owned channel you picked — I'll pressure-test
+        the friction and we'll script the exact on-screen text + spoken line.</li>
+    </ol>
+    <p style="margin-bottom:0">Reminder: your Lesson 0001 task (5 scored hooks) is still open whenever
+    you want feedback. Hooks fill the bucket; this lesson plugs the leak.</p>
+  </div>
+
+  <div class="ask">
+    💬 <strong>I'm your teacher — use me.</strong> Want me to recommend the lowest-friction owned
+    channel for a two-person team? Or write 5 CTAs for a specific sermon clip? Or sanity-check whether
+    a text-keyword service is worth the cost at your size? Ask in the chat.
+  </div>
+
+  <h2>What's next</h2>
+  <p>Lesson 0003 enters the <strong>Minister</strong> stage: designing the recurring online study
+  that becomes the bridge from anonymous viewer to your Mobile table — and the gentle, repeatable
+  invitation that gets people there. But first: pick your owned home. Without it, there's nowhere
+  to invite people <em>to</em>.</p>
+
+  <footer>
+    <p><strong>Reference shelf:</strong>
+      <a href="../reference/online-ministry-funnel.html">The Funnel</a> ·
+      <a href="../reference/hook-library.html">Hook Library</a> ·
+      <a href="../reference/glossary.html">Glossary</a></p>
+    <p><a href="0001-the-3-second-hook.html">← Lesson 0001 · The 3-Second Hook</a> &nbsp;·&nbsp;
+       <strong>Lesson 0003 · Minister (coming when you're ready) →</strong></p>
+    <p>Sources used:
+      <a href="https://driveeditor.com/blog/best-cta-formats-for-short-videos">DriveEditor (CTA data)</a> ·
+      <a href="https://www.theindiepractice.com/blog/short-form-video-call-to-actions-cta-ideas">The Indie Practice</a> ·
+      <a href="https://www.mosestab.com/blog/church-communication-strategies">MosesTab</a> ·
+      <a href="https://simpletexting.com/industry/text-messaging-tool-for-churches/">SimpleTexting</a> ·
+      <a href="https://influencermarketinghub.com/full-funnel-creator-strategy/">Influencer Marketing Hub</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var sel = document.getElementById('goalSel');
+  var input = document.getElementById('ctaInput');
+  var readout = document.getElementById('readout');
+  var checksEl = document.getElementById('checks');
+  var scoreNum = document.getElementById('scoreNum');
+  var suggest = document.getElementById('suggest');
+
+  var ownedWords = ["text ","comment ","dm ","email","join","sign up","subscribe","link","keyword","send me","reply"];
+  var shareWords = ["send this","share this","send it to","tag ","send to a friend","share with"];
+  var followWords = ["follow"];
+  var deeperWords = ["full sermon","full teaching","full message","watch the full","podcast","part 2","part two","whole talk","link in bio","watch more"];
+
+  var ideal = {
+    share: 'A SHARE goal wants: <b>"Send this to someone who needs it today."</b> DM shares are the top algorithm signal — far better than "like."',
+    follow:'A FOLLOW goal wants a reason to stay: <b>"Follow for Part 2"</b> or "Follow — one family tool every weekday."',
+    deeper:'A DEEPER goal points to one specific destination: <b>"Watch the full message — comment FULL and I\'ll send it."</b> Avoid bare "link in bio" (converts ~1–3%).',
+    owned: 'An OWNED goal is the high-value rung. Best pattern: <b>"Comment HOME"</b> or <b>"Text JOIN to ___"</b> + a DM with the link (converts 5–15%). Keep friction tiny.',
+    study: 'A STUDY invite names the when + the welcome: <b>"We gather online every Tuesday — comment IN and I\'ll send the link. All are welcome."</b>'
+  };
+
+  function analyze(){
+    var goal = sel.value;
+    var t = input.value.trim().toLowerCase();
+    if(!t){ readout.style.display='none'; suggest.style.display='block'; suggest.innerHTML='<b>Tip for this goal:</b> '+ideal[goal]; return; }
+    readout.style.display='block'; suggest.style.display='block';
+
+    var rows=[]; var score=0;
+    var words = t.split(/\s+/).length;
+
+    // 1: single ask — count distinct action verbs
+    var actions = 0;
+    [/follow/,/\bshare|send this|send it|tag\b/,/\bcomment\b/,/\blike\b/,/\bsave\b/,/\bsubscribe\b/,/link in bio|link below|\btext\b|\bemail\b|sign up/].forEach(function(re){ if(re.test(t)) actions++; });
+    if(actions<=1 && words>0){ score++; rows.push(['ok','One clear ask','Single direction — good']); }
+    else { rows.push(['no',actions+' competing asks','Pick ONE. Multiple CTAs split attention and net zero']); }
+
+    // 2: low friction & specific (short, concrete)
+    if(words<=16){ score++; rows.push(['ok','Low friction','Short and easy to act on']); }
+    else { rows.push(['mid','A bit heavy','Trim it — the easier the ask, the more who do it']); }
+
+    // 3: matches the chosen goal
+    var matchMap = {share:shareWords, follow:followWords, deeper:deeperWords, owned:ownedWords, study:ownedWords};
+    var hit = matchMap[goal].some(function(w){return t.indexOf(w)>-1;});
+    // penalize bare "link in bio" for owned/deeper
+    var bareBio = /link in bio/.test(t) && !/comment|text|dm|reply/.test(t);
+    if(hit && !(goal==='owned' && bareBio)){ score++; rows.push(['ok','Matches your goal','The ask points to the rung you chose']); }
+    else if(goal==='owned' && bareBio){ rows.push(['mid','"Link in bio" is weak here','Use "comment a keyword" + DM instead — 5–15% vs ~1–3%']); }
+    else { rows.push(['no','Doesn\'t match the goal','Your CTA isn\'t pointing to the rung you selected above']); }
+
+    // 4: dual delivery reminder (not auto-detectable) — award if they wrote a keyword in CAPS (sign of on-screen intent)
+    if(/\b[A-Z]{3,}\b/.test(input.value)){ score++; rows.push(['ok','Keyword stands out','A CAPS keyword reads well on-screen and in comments']); }
+    else { rows.push(['mid','Say it AND show it','Put this CTA on screen as text too — most viewers are muted. A short CAPS keyword helps']); }
+
+    scoreNum.textContent=score;
+    scoreNum.style.color = score>=3?'var(--good)':score>=2?'var(--warn)':'var(--bad)';
+    checksEl.innerHTML = rows.map(function(r){return '<li class="'+r[0]+'"><strong>'+r[1]+'</strong><small>'+r[2]+'</small></li>';}).join('');
+    suggest.innerHTML='<b>Model for this goal:</b> '+ideal[goal];
+  }
+  sel.addEventListener('change',analyze);
+  input.addEventListener('input',analyze);
+  analyze();
+
+  document.querySelectorAll('.q').forEach(function(q){
+    var correct=parseInt(q.getAttribute('data-correct'),10);
+    var opts=q.querySelectorAll('.opt'); var fb=q.querySelector('.fb');
+    opts.forEach(function(opt,i){
+      opt.addEventListener('click',function(){
+        opts.forEach(function(o){o.disabled=true;});
+        if(i===correct){opt.classList.add('correct');fb.textContent='Correct.';}
+        else{opt.classList.add('wrong');opts[correct].classList.add('correct');fb.textContent='Not quite — the highlighted answer is right.';}
+        fb.style.display='block';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

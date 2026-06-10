@@ -33,6 +33,17 @@
 - [Content Strategy for Creators — Ghost](https://ghost.org/resources/content-strategy-creator-funnel/)
   Use for: structuring short → long → owned-audience progression.
 
+### CTAs & retention (Lesson 0002)
+- [20 Great CTAs for Short-Form Video — The Indie Practice](https://www.theindiepractice.com/blog/short-form-video-call-to-actions-cta-ideas)
+  Use for: ready-made CTA lines for follow / save / share / step-deeper.
+- [Best CTA Formats for Short Videos — DriveEditor](https://driveeditor.com/blog/best-cta-formats-for-short-videos)
+  Data points: one CTA per post; "comment KEYWORD" + DM converts 5–15% vs 1–3% for link-in-bio;
+  "send to a friend" beats like-CTAs (DM shares = top algo signal); dual delivery (spoken + on-screen).
+- [Church Communication Strategies — MosesTab](https://www.mosestab.com/blog/church-communication-strategies)
+  Use for: SMS 98% open rate vs ~5% organic social reach; member-to-member community is 10× an admin-only page.
+- [Church SMS / keyword opt-in — SimpleTexting](https://simpletexting.com/industry/text-messaging-tool-for-churches/)
+  Use for: the lowest-friction "owned audience" capture for a small ministry (text a keyword to join).
+
 ## Wisdom (Communities)
 - Pending — to be curated with the user. Candidate areas: a faith-creator community,
   a short-form/clipping creators community, and a small peer group for hook feedback.
