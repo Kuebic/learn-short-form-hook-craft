@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0003 · The Open Door</title>
+<style>
+  :root{
+    --ink:#1f1b16; --muted:#6b5f52; --paper:#fbf7f0; --card:#ffffff;
+    --line:#e7ddcf; --accent:#9a6a3a; --accent-soft:#f1e4d3; --gold:#c08a2d;
+    --good:#3c7a4e; --warn:#b07a1e; --bad:#a8432f; --minister:#7a4b6e; --minister-soft:#efe3ec;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:17px/1.7 "Iowan Old Style","Palatino Linotype",Georgia,serif;padding:0 20px 100px}
+  .wrap{max-width:760px;margin:0 auto}
+  .mission{background:var(--accent-soft);border:1px solid #e6d3b8;border-radius:0 0 14px 14px;
+    border-top:none;padding:12px 18px;font:14px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5e4a2c;margin-bottom:34px}
+  .mission b{color:var(--accent)}
+  .eyebrow{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--minister);margin-top:40px}
+  h1{font-size:2.3rem;line-height:1.12;margin:.25em 0 .15em}
+  .sub{color:var(--muted);font-size:1.12rem;margin:0 0 1.4rem}
+  .meta{font:13px ui-sans-serif,system-ui,sans-serif;color:var(--muted);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0;margin-bottom:2rem;display:flex;gap:18px;flex-wrap:wrap}
+  h2{font-size:1.5rem;margin:2.6rem 0 .5rem}
+  h3{font-size:1.15rem;margin:1.6rem 0 .3rem}
+  p{margin:.6rem 0}
+  .lead{font-size:1.12rem}
+  .stat{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--minister);
+    border-radius:10px;padding:14px 20px;margin:1.2rem 0;font-size:1.05rem}
+  .stat b{color:var(--minister);font-size:1.08em}
+  .principles{list-style:none;margin:1rem 0;padding:0}
+  .principles li{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:8px 0;
+    padding:13px 16px 13px 50px;position:relative;font:15px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .principles li::before{content:attr(data-i);position:absolute;left:14px;top:13px;font-size:1.3rem}
+  .principles b{color:var(--ink)}
+  .example{background:var(--minister-soft);border:1px dashed #cdb0c6;border-radius:12px;padding:18px 22px;margin:1.4rem 0}
+  .example ul{margin:.4rem 0 0;padding-left:1.2rem}.example li{margin:.4rem 0}
+  /* builder */
+  .lab{background:var(--card);border:2px solid var(--minister);border-radius:16px;padding:24px;margin:1.6rem 0;box-shadow:0 6px 22px rgba(122,75,110,.12)}
+  .lab h3{margin-top:0;color:var(--minister)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  label.fld{display:block;font:600 13px ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:10px 0 4px}
+  input[type=text],textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;
+    font:1rem/1.4 "Iowan Old Style",Georgia,serif;background:#fffdf8;color:var(--ink)}
+  textarea{min-height:54px;resize:vertical}
+  input:focus,textarea:focus{outline:2px solid var(--minister);border-color:var(--minister)}
+  .card-out{background:#fff;border:1px solid var(--line);border-top:5px solid var(--minister);border-radius:12px;
+    padding:20px 22px;margin:18px 0 6px;font-family:ui-sans-serif,system-ui,sans-serif}
+  .card-out .promise{font:700 1.25rem/1.3 "Iowan Old Style",Georgia,serif;color:var(--minister);margin:0 0 8px}
+  .card-out .row{font-size:14px;margin:5px 0;color:#3a332c}
+  .card-out .row b{color:var(--muted);font-weight:600}
+  .card-out .expect{background:var(--minister-soft);border-radius:8px;padding:8px 12px;margin:10px 0;font-size:13.5px}
+  .card-out .invite{font-style:italic;color:#4a3f49;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px;font-size:14px}
+  .checks{list-style:none;margin:10px 0 0;padding:0;font:14px ui-sans-serif,system-ui,sans-serif}
+  .checks li{padding:6px 0 6px 28px;position:relative;border-top:1px solid var(--line)}
+  .checks li::before{position:absolute;left:0;top:5px;font-size:1rem}
+  .checks li.ok::before{content:"\2713";color:var(--good)}
+  .checks li.no::before{content:"\2715";color:var(--bad)}
+  .checks li.mid::before{content:"\203B";color:var(--warn)}
+  .checks small{color:var(--muted);display:block}
+  .scoreline{font:600 14px ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:10px}
+  .scoreline b{font-size:1.5rem;font-family:ui-sans-serif,system-ui,sans-serif}
+  /* quiz */
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:1.4rem 0}
+  .q{margin:1rem 0}.q p{font:600 1.05rem ui-sans-serif,system-ui,sans-serif;margin:.2rem 0 .6rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:9px;
+    padding:10px 14px;margin:6px 0;font:15px ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--ink);transition:.12s}
+  .opt:hover{border-color:var(--minister)}
+  .opt.correct{background:#e3f0e6;border-color:var(--good);color:#23532f}
+  .opt.wrong{background:#f6e3df;border-color:var(--bad);color:#7a2a1c}
+  .fb{font:14px ui-sans-serif,system-ui,sans-serif;margin-top:6px;display:none;color:var(--muted)}
+  .task{background:var(--minister-soft);border:1px solid #cdb0c6;border-radius:14px;padding:20px 24px;margin:1.8rem 0}
+  .task h2{margin-top:0}.task ol{padding-left:1.2rem}
+  .ask{background:#fff;border:1px solid var(--line);border-left:6px solid var(--minister);border-radius:10px;
+    padding:14px 20px;margin:1.6rem 0;font:15px ui-sans-serif,system-ui,sans-serif}
+  footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;font:14px ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  a{color:var(--accent)}
+  cite{display:block;font:12px ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:1.2rem}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="mission">
+    <b>Mission thread:</b> Lessons 0001–0002 fill and keep the bucket. But reach and a text list
+    aren't the goal — <em>relationship</em> is. This is Stage&nbsp;3 — <b>Minister</b> — of
+    <a href="../reference/online-ministry-funnel.html">the funnel</a>: the recurring online gathering
+    that becomes the bridge from a name on a list to a seat at your table — the place where
+    unbreakable families are actually built.
+  </div>
+
+  <div class="eyebrow">Lesson 0003 · Minister</div>
+  <h1>The Open Door</h1>
+  <p class="sub">Design a recurring online gathering a nervous first-timer will actually show up to —
+  and want to come back to.</p>
+  <div class="meta">
+    <span>⏱ ~15 minutes</span><span>🎯 One skill: design a low-barrier, return-worthy gathering</span><span>✅ Win: a finished Open Door card</span>
+  </div>
+
+  <p class="lead">You can't disciple a viewer. You can only disciple a <em>person in a room</em> —
+  even a virtual one. The whole Minister stage hinges on one thing: a <strong>door that's easy to
+  walk through and warm enough to stay behind.</strong> Most online groups fail not because the
+  teaching is weak, but because the door is scary: unclear what happens, no one greets you, and it
+  feels like a commitment before you've even arrived.</p>
+
+  <div class="stat">
+    People say yes when they know <b>they won't be alone</b> and they know <b>what to expect.</b>
+    Even modest trust dramatically changes whether someone shows. Virtual lowers the stakes further —
+    if it's not for them, they can quietly leave. Your job is to make walking in feel safe.
+    <cite>Church Answers; ReachRight; Lifeway small-group research.</cite>
+  </div>
+
+  <h2>The 6 marks of a return-worthy gathering</h2>
+  <ol class="principles">
+    <li data-i="🚪"><b>Low barrier.</b> One click, no account, no homework, no camera required. The
+      easier the entry, the more nervous people risk it.</li>
+    <li data-i="🗺"><b>Know-what-to-expect.</b> State the length, the shape, and the vibe up front.
+      "45 minutes, one passage, open conversation, no pressure to speak." Surprise is the enemy of return.</li>
+    <li data-i="👋"><b>Named welcome.</b> Greet each person — especially first-timers — by name as they
+      arrive. Being seen in the first 30 seconds is what melts anxiety.</li>
+    <li data-i="🎙"><b>Facilitate, don't preach.</b> Lead by asking, not lecturing — aim to talk
+      <em>less than 25%</em> of the time. After a question, wait (count to 9) and let silence do its work.
+      People return to places where <em>their</em> voice mattered.</li>
+    <li data-i="💛"><b>Encourage before you expert.</b> Be known as someone who affirms what people
+      share before you correct or teach. Safety first, depth second.</li>
+    <li data-i="🔁"><b>Reliable rhythm + a follow-up.</b> Same day, same time, every week. Then a short
+      personal message after ("so glad you came — see you Tuesday?"). Rhythm + a hand on the shoulder = return.</li>
+  </ol>
+
+  <div class="example">
+    <strong>The gentle invitation (your north star: invite, don't argue):</strong>
+    <ul>
+      <li>❌ Pushy: "Don't miss it! You NEED to be there. Sign up now — limited spots!"</li>
+      <li>✅ Gentle: "If you're looking for a community to walk with, we gather Tuesdays. Come as you
+        are — no pressure to talk, no Bible knowledge required. There's a seat for you."</li>
+    </ul>
+    Low-pressure language isn't weakness — it's what makes a stranger feel <em>allowed</em> to come.
+  </div>
+
+  <!-- BUILDER -->
+  <div class="lab">
+    <h3>🔬 The Open Door Builder — design your gathering, get a shareable card</h3>
+    <p style="margin-top:0">Fill these in and watch a first-timer invite card assemble live below.
+    The checklist scores it against the 6 marks. Aim for a card you'd feel proud to post.</p>
+
+    <div class="grid">
+      <div>
+        <label class="fld" for="fPromise">The promise (one warm line — what they'll get/feel)</label>
+        <input type="text" id="fPromise" placeholder="A calm hour to build a stronger family, together.">
+      </div>
+      <div>
+        <label class="fld" for="fWhen">When it recurs (same day + time, weekly)</label>
+        <input type="text" id="fWhen" placeholder="Tuesdays, 7:00pm CT (weekly)">
+      </div>
+      <div>
+        <label class="fld" for="fWhere">Where (one-click platform)</label>
+        <input type="text" id="fWhere" placeholder="Zoom — one link, no account needed">
+      </div>
+      <div>
+        <label class="fld" for="fExpect">What to expect (length + shape)</label>
+        <input type="text" id="fExpect" placeholder="45 min · one passage · open talk · camera optional">
+      </div>
+    </div>
+    <label class="fld" for="fWelcome">Your welcome ritual (how first-timers are greeted)</label>
+    <input type="text" id="fWelcome" placeholder="We greet everyone by name as they arrive; no pressure to speak.">
+    <label class="fld" for="fInvite">The gentle invitation line</label>
+    <textarea id="fInvite" placeholder="If you're looking for a community to walk with, come as you are — there's a seat for you."></textarea>
+
+    <div class="card-out" id="cardOut" style="display:none">
+      <p class="promise" id="oPromise"></p>
+      <div class="row"><b>🗓 When:</b> <span id="oWhen"></span></div>
+      <div class="row"><b>📍 Where:</b> <span id="oWhere"></span></div>
+      <div class="expect" id="oExpect"></div>
+      <div class="row"><b>👋 First time?</b> <span id="oWelcome"></span></div>
+      <div class="invite" id="oInvite"></div>
+    </div>
+
+    <ul class="checks" id="checks"></ul>
+    <div class="scoreline">Open-door score: <b id="scoreNum">0</b> / 6</div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" id="quiz">
+    <h3 style="margin-top:0">Quick gut-check</h3>
+
+    <div class="q" data-correct="2">
+      <p>1. In a healthy small-group discussion, the facilitator should talk…</p>
+      <button class="opt">Most of the time — they're the teacher.</button>
+      <button class="opt">About half the time.</button>
+      <button class="opt">Less than 25% — lead by asking, not lecturing.</button>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-correct="1">
+      <p>2. A first-timer is most likely to return if, in the first 30 seconds, they…</p>
+      <button class="opt">Are asked to introduce themselves and share a testimony.</button>
+      <button class="opt">Are greeted warmly by name and told what to expect.</button>
+      <button class="opt">Receive a list of rules and a reading assignment.</button>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-correct="0">
+      <p>3. Which invitation best fits "invite, don't argue"?</p>
+      <button class="opt">"Come as you are — no Bible knowledge needed, no pressure to talk. There's a seat for you."</button>
+      <button class="opt">"You won't find the truth anywhere else — be there or miss out."</button>
+      <button class="opt">"Sign up now, spots are limited, don't disappoint us."</button>
+      <div class="fb"></div>
+    </div>
+  </div>
+
+  <!-- TASK -->
+  <div class="task">
+    <h2>🎯 Your win this session</h2>
+    <ol>
+      <li><strong>Finish your Open Door card</strong> in the builder above — get the score to 5–6.
+        That card <em>is</em> your gathering's spec and your invite post in one.</li>
+      <li><strong>Pick the day, time, and platform you'll actually commit to weekly.</strong> Rhythm beats
+        ambition — a reliable 45 minutes every Tuesday outperforms a big monthly event.</li>
+      <li><strong>Bring the card back to me.</strong> We'll script your first 3 minutes (the welcome),
+        write the gentle-invite CTA to drive from your clips, and plan the after-gathering follow-up.</li>
+    </ol>
+    <p style="margin-bottom:0"><strong>One measurement note:</strong> judge this stage by
+    <em>relationship</em> metrics — who returns, who speaks up, who you can now message by name — not
+    views. We'll build that scorecard in a later lesson.</p>
+  </div>
+
+  <div class="ask">
+    💬 <strong>I'm your teacher — use me.</strong> Want a full run-of-show for a 45-minute online study?
+    A welcome script for the first 3 minutes? Help choosing Zoom vs. a group call vs. Discord for a
+    two-person team? Or 5 gentle-invite CTAs to drive from your Shorts? Ask in the chat.
+  </div>
+
+  <h2>What's next</h2>
+  <p>You now have all three funnel stages mapped: <strong>Reach</strong> (the hook),
+  <strong>Retain</strong> (the next rung), <strong>Minister</strong> (the open door). The arc is
+  complete. From here, future lessons go deeper on demand — a weekly content cadence, a welcome
+  script, the relationship scorecard, or batching clips from one sermon. Tell me where the real
+  friction is for you and your pastor, and that's the next lesson.</p>
+
+  <footer>
+    <p><strong>Reference shelf:</strong>
+      <a href="../reference/online-ministry-funnel.html">The Funnel</a> ·
+      <a href="../reference/hook-library.html">Hook Library</a> ·
+      <a href="../reference/glossary.html">Glossary</a></p>
+    <p><a href="0002-the-next-rung.html">← Lesson 0002 · The Next Rung</a></p>
+    <p>Sources used:
+      <a href="https://www.thegospelcoalition.org/article/lead-bible-study-discussions/">The Gospel Coalition (facilitation)</a> ·
+      <a href="https://adultministry.lifeway.com/2019/11/07/10-ways-to-optimize-small-group-bible-study/">Lifeway</a> ·
+      <a href="https://churchanswers.com/blog/what-types-of-invitations-are-most-effective-to-get-people-to-come-to-church/">Church Answers</a> ·
+      <a href="https://reachrightstudios.com/blog/invite-people-to-church/">ReachRight</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var ids=['fPromise','fWhen','fWhere','fExpect','fWelcome','fInvite'];
+  var f={}; ids.forEach(function(id){f[id]=document.getElementById(id);});
+  var cardOut=document.getElementById('cardOut');
+  var checksEl=document.getElementById('checks');
+  var scoreNum=document.getElementById('scoreNum');
+  var pushy=["must","need to","have to","limited","don't miss","sign up now","be there or","hurry","last chance","only spots","required"];
+  var gentleWords=["come as you are","no pressure","welcome","if you","whenever you","there's a seat","no need","all are welcome","walk with","no bible knowledge","optional"];
+
+  function val(id){return f[id].value.trim();}
+  function set(id,txt){document.getElementById(id).textContent=txt;}
+
+  function render(){
+    var any=ids.some(function(id){return val(id);});
+    cardOut.style.display=any?'block':'none';
+    set('oPromise', val('fPromise')||'Your one-line promise…');
+    set('oWhen', val('fWhen')||'—');
+    set('oWhere', val('fWhere')||'—');
+    set('oExpect', val('fExpect')?('What to expect: '+val('fExpect')):'What to expect: —');
+    set('oWelcome', val('fWelcome')||'—');
+    set('oInvite', val('fInvite')?('“'+val('fInvite')+'”'):'');
+
+    var rows=[],score=0;
+    // 1 low barrier (where mentions one-click / no account / link / zoom / discord / call)
+    var where=val('fWhere').toLowerCase();
+    if(/one|link|no account|no sign|zoom|discord|call|click|free/.test(where) && where){score++;rows.push(['ok','Low barrier','One-click, no-account entry']);}
+    else if(where){rows.push(['mid','Make entry easier','Spell out "one link, no account needed"']);}
+    else {rows.push(['no','No platform yet','Pick a one-click place to meet']);}
+
+    // 2 know what to expect (length number + shape)
+    var ex=val('fExpect').toLowerCase();
+    if(/\d/.test(ex) && ex.length>6){score++;rows.push(['ok','They know what to expect','Length + shape are clear']);}
+    else if(ex){rows.push(['mid','Add the length','Put a time (e.g. "45 min") so there are no surprises']);}
+    else {rows.push(['no','Expectations unset','State length + shape of the gathering']);}
+
+    // 3 named welcome
+    var w=val('fWelcome').toLowerCase();
+    if(/name|greet|welcome|by name/.test(w)){score++;rows.push(['ok','Warm, named welcome','First-timers will feel seen']);}
+    else if(w){rows.push(['mid','Make it personal','Greeting people by name is the anxiety-melter']);}
+    else {rows.push(['no','No welcome ritual','Plan how first-timers get greeted']);}
+
+    // 4 reliable rhythm (when has a weekday + weekly/every)
+    var when=val('fWhen').toLowerCase();
+    if(/(mon|tue|wed|thu|fri|sat|sun)/.test(when) && /(week|every)/.test(when)){score++;rows.push(['ok','Reliable rhythm','Same day, recurring weekly']);}
+    else if(when){rows.push(['mid','Lock a weekly rhythm','Same weekday, every week beats sporadic']);}
+    else {rows.push(['no','No set rhythm','Choose a fixed weekly day + time']);}
+
+    // 5 promise is warm & concrete
+    var p=val('fPromise');
+    if(p && p.split(/\s+/).length<=14){score++;rows.push(['ok','Clear, warm promise','One inviting line']);}
+    else if(p){rows.push(['mid','Tighten the promise','Aim for one warm line, ~14 words or fewer']);}
+    else {rows.push(['no','No promise yet','Say in one line what they\'ll get/feel']);}
+
+    // 6 gentle invite (has gentle language, no pushy language)
+    var inv=val('fInvite').toLowerCase();
+    var hasGentle=gentleWords.some(function(g){return inv.indexOf(g)>-1;});
+    var hasPushy=pushy.some(function(x){return inv.indexOf(x)>-1;});
+    if(inv && hasGentle && !hasPushy){score++;rows.push(['ok','Gentle invitation','Invites, doesn\'t pressure']);}
+    else if(hasPushy){rows.push(['no','Too pushy','Remove pressure words — invite, don\'t argue']);}
+    else if(inv){rows.push(['mid','Warm it up','Add "come as you are / no pressure / there\'s a seat for you"']);}
+    else {rows.push(['no','No invite line','Write the gentle invitation']);}
+
+    scoreNum.textContent=score;
+    scoreNum.style.color=score>=5?'var(--good)':score>=3?'var(--warn)':'var(--bad)';
+    checksEl.innerHTML=rows.map(function(r){return '<li class="'+r[0]+'"><strong>'+r[1]+'</strong><small>'+r[2]+'</small></li>';}).join('');
+  }
+  ids.forEach(function(id){f[id].addEventListener('input',render);});
+  render();
+
+  document.querySelectorAll('.q').forEach(function(q){
+    var correct=parseInt(q.getAttribute('data-correct'),10);
+    var opts=q.querySelectorAll('.opt'); var fb=q.querySelector('.fb');
+    opts.forEach(function(opt,i){
+      opt.addEventListener('click',function(){
+        opts.forEach(function(o){o.disabled=true;});
+        if(i===correct){opt.classList.add('correct');fb.textContent='Correct.';}
+        else{opt.classList.add('wrong');opts[correct].classList.add('correct');fb.textContent='Not quite — the highlighted answer is right.';}
+        fb.style.display='block';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
