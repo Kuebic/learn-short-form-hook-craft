@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0001 · The 3-Second Hook</title>
+<style>
+  :root{
+    --ink:#1f1b16; --muted:#6b5f52; --paper:#fbf7f0; --card:#ffffff;
+    --line:#e7ddcf; --accent:#9a6a3a; --accent-soft:#f1e4d3; --gold:#c08a2d;
+    --good:#3c7a4e; --warn:#b07a1e; --bad:#a8432f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:17px/1.7 "Iowan Old Style","Palatino Linotype",Georgia,serif;padding:0 20px 100px}
+  .wrap{max-width:760px;margin:0 auto}
+  .mission{background:var(--accent-soft);border:1px solid #e6d3b8;border-radius:0 0 14px 14px;
+    border-top:none;padding:12px 18px;font:14px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5e4a2c;
+    margin-bottom:34px}
+  .mission b{color:var(--accent)}
+  .eyebrow{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--accent);margin-top:40px}
+  h1{font-size:2.3rem;line-height:1.12;margin:.25em 0 .15em}
+  .sub{color:var(--muted);font-size:1.12rem;margin:0 0 1.4rem}
+  .meta{font:13px ui-sans-serif,system-ui,sans-serif;color:var(--muted);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0;margin-bottom:2rem;
+    display:flex;gap:18px;flex-wrap:wrap}
+  h2{font-size:1.5rem;margin:2.6rem 0 .5rem}
+  h3{font-size:1.15rem;margin:1.6rem 0 .3rem}
+  p{margin:.6rem 0}
+  .lead{font-size:1.12rem}
+  .stat{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--gold);
+    border-radius:10px;padding:14px 20px;margin:1.2rem 0;font-size:1.05rem}
+  .stat b{color:var(--accent);font-size:1.15em}
+  .triggers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:1rem 0}
+  .trig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+  .trig b{display:block;font:600 14px ui-sans-serif,system-ui,sans-serif;color:var(--accent);margin-bottom:2px}
+  .trig span{font-size:.95rem;color:var(--muted)}
+  .example{background:#f3ece0;border:1px dashed #d8c6a8;border-radius:12px;padding:18px 22px;margin:1.4rem 0}
+  .example .raw{color:var(--muted);font-style:italic}
+  .example ol{margin:.5rem 0 0;padding-left:1.3rem}
+  .example li{margin:.45rem 0}
+  /* interactive */
+  .lab{background:var(--card);border:2px solid var(--accent);border-radius:16px;
+    padding:24px;margin:1.6rem 0;box-shadow:0 6px 22px rgba(154,106,58,.10)}
+  .lab h3{margin-top:0;color:var(--accent)}
+  textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+    font:1.15rem/1.45 "Iowan Old Style",Georgia,serif;background:#fffdf8;resize:vertical;color:var(--ink)}
+  textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+  .readout{margin-top:14px;display:none}
+  .scorebar{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .scorenum{font:700 2rem ui-sans-serif,system-ui,sans-serif;line-height:1}
+  .scorelabel{font:600 14px ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .checks{list-style:none;margin:0;padding:0;font:15px ui-sans-serif,system-ui,sans-serif}
+  .checks li{padding:7px 0 7px 30px;position:relative;border-top:1px solid var(--line)}
+  .checks li::before{position:absolute;left:0;top:6px;font-size:1.1rem}
+  .checks li.ok::before{content:"\2713";color:var(--good)}
+  .checks li.no::before{content:"\2715";color:var(--bad)}
+  .checks li.mid::before{content:"\203B";color:var(--warn)}
+  .checks small{color:var(--muted);display:block}
+  .tags{margin:10px 0 0;font:13px ui-sans-serif,system-ui,sans-serif}
+  .tag{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:999px;
+    padding:3px 10px;margin:3px 4px 0 0;font-weight:600}
+  .hint{font:13px ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:6px}
+  /* quiz */
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:1.4rem 0}
+  .q{margin:1rem 0}
+  .q p{font:600 1.05rem ui-sans-serif,system-ui,sans-serif;margin:.2rem 0 .6rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);
+    border-radius:9px;padding:10px 14px;margin:6px 0;font:15px ui-sans-serif,system-ui,sans-serif;
+    cursor:pointer;color:var(--ink);transition:.12s}
+  .opt:hover{border-color:var(--gold)}
+  .opt.correct{background:#e3f0e6;border-color:var(--good);color:#23532f}
+  .opt.wrong{background:#f6e3df;border-color:var(--bad);color:#7a2a1c}
+  .fb{font:14px ui-sans-serif,system-ui,sans-serif;margin-top:6px;display:none;color:var(--muted)}
+  .task{background:var(--accent-soft);border:1px solid #e6d3b8;border-radius:14px;padding:20px 24px;margin:1.8rem 0}
+  .task h2{margin-top:0}
+  .task ol{padding-left:1.2rem}
+  .ask{background:#fff;border:1px solid var(--line);border-left:6px solid var(--accent);
+    border-radius:10px;padding:14px 20px;margin:1.6rem 0;font:15px ui-sans-serif,system-ui,sans-serif}
+  footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;
+    font:14px ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  a{color:var(--accent)}
+  .nav-next{display:inline-block;margin-top:.5rem;font-weight:600}
+  cite{display:block;font:12px ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:1.4rem}
+  @media(max-width:560px){.triggers{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="mission">
+    <b>Mission thread:</b> Strangers won't reach your in-person table in Mobile, your podcast,
+    or your study until a <b>hook</b> earns their first 3 seconds. This is Stage&nbsp;1 — Reach —
+    of <a href="../reference/online-ministry-funnel.html">the funnel</a>. Master this one skill and
+    every deeper layer you've built finally gets a doorway.
+  </div>
+
+  <div class="eyebrow">Lesson 0001 · Reach</div>
+  <h1>The 3-Second Hook</h1>
+  <p class="sub">Write an opening line that stops the scroll — so your message of oneness and
+  unbreakable families actually gets <em>seen</em>.</p>
+  <div class="meta">
+    <span>⏱ ~12 minutes</span><span>🎯 One skill: draft a scroll-stopping hook</span><span>✅ Win: 5 real hooks, scored</span>
+  </div>
+
+  <p class="lead">Here is the entire job of a hook: <strong>earn the next three seconds.</strong>
+  Not explain. Not convert. Not summarize the sermon. Just buy three more seconds — then those
+  three buy the next, until your message lands. That's it. If you believe nothing else from this
+  lesson, believe that the opening line is a <em>door</em>, not a summary.</p>
+
+  <div class="stat">
+    Clips that hold <b>more than 65%</b> of viewers past second 3 get <b>4–7× more reach</b> than
+    clips that don't. The algorithm rewards the <em>hold</em>, not your follower count — which is
+    exactly why a brand-new account can reach thousands.
+    <cite>OpusClip, "TikTok Hook Formulas That Drive 3-Second Holds."</cite>
+  </div>
+
+  <h2>The mental model: pull a trigger</h2>
+  <p>A scroll is the brain on autopilot. A hook works by yanking one of four psychological
+  levers that <em>break</em> autopilot. You don't need all four. Pull <strong>one</strong> well;
+  stack <strong>two</strong> and you're dangerous.</p>
+
+  <div class="triggers">
+    <div class="trig"><b>Curiosity gap</b><span>Open a loop the brain must close. "Nobody tells you…"</span></div>
+    <div class="trig"><b>Pattern interrupt</b><span>Contradict the expected. "Love isn't the foundation — oneness is."</span></div>
+    <div class="trig"><b>Self-relevance</b><span>Name the exact person. "If you grew up in a divided home…"</span></div>
+    <div class="trig"><b>Emotion / loss</b><span>A real stake. We feel a loss ~2× a gain. "Your kids won't remember the gifts."</span></div>
+  </div>
+  <p class="hint">Full menu of fill-in-the-blank formulas lives in your <a href="../reference/hook-library.html">Hook Library</a>.</p>
+
+  <h2>The 5-point check (memorize this)</h2>
+  <div class="example">
+    <ol>
+      <li><strong>Short</strong> — ~12 words or fewer; ~2.5 seconds to say aloud.</li>
+      <li><strong>Pulls a trigger</strong> — at least one of the four.</li>
+      <li><strong>Specific</strong> — "the dinner table," not "spending time together."</li>
+      <li><strong>True to the clip</strong> — the video must deliver what the hook promises. No bait.</li>
+      <li><strong>Works on mute</strong> — said aloud <em>and</em> on screen as text in the first 2s
+        (60%+ watch with sound off).</li>
+    </ol>
+  </div>
+
+  <h2>Watch one line become three hooks</h2>
+  <p>Say your sermon contains this line: <em>"A family finds its strength when everyone is pulling
+  toward the same center."</em> Flat as a hook. Now we run it through three triggers:</p>
+  <div class="example">
+    <p class="raw">Raw line → "A family finds its strength when everyone pulls toward the same center."</p>
+    <ol>
+      <li><strong>Curiosity:</strong> "Nobody tells you what actually holds a family together."</li>
+      <li><strong>Pattern interrupt:</strong> "A strong family isn't 50/50. It's 100/100."</li>
+      <li><strong>Self-relevance + loss:</strong> "If your home feels divided, you're missing one thing."</li>
+    </ol>
+  </div>
+
+  <!-- INTERACTIVE LAB -->
+  <div class="lab">
+    <h3>🔬 Hook Lab — type a hook, get scored instantly</h3>
+    <p style="margin-top:0">Write a hook for one of your clips (or try fixing the raw line above).
+    The lab grades it live against the 5-point check. Aim for 4–5.</p>
+    <textarea id="hookInput" placeholder="e.g. Nobody tells you the Bible has a blueprint for the home."></textarea>
+    <div class="readout" id="readout">
+      <div class="scorebar">
+        <span class="scorenum" id="scoreNum">0</span>
+        <span class="scorelabel" id="scoreLabel">/ 5</span>
+      </div>
+      <ul class="checks" id="checks"></ul>
+      <div class="tags" id="tags"></div>
+    </div>
+    <p class="hint">The lab can't judge #4 (true to the clip) — that's your conscience. And it
+    reminds, not replaces, #5 (on-screen text). Use judgment; the score is a coach, not a referee.</p>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz" id="quiz">
+    <h3 style="margin-top:0">Quick gut-check</h3>
+
+    <div class="q" data-correct="1">
+      <p>1. Which is the strongest <em>hook</em>?</p>
+      <button class="opt">In this video I'll talk about the importance of family in the Bible.</button>
+      <button class="opt">You've probably read Genesis 2:24 wrong your whole life.</button>
+      <button class="opt">Welcome back to the channel, today's topic is oneness.</button>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-correct="2">
+      <p>2. A hook's single job is to…</p>
+      <button class="opt">Summarize the whole sermon up front.</button>
+      <button class="opt">State your ministry's name and mission.</button>
+      <button class="opt">Earn the next three seconds.</button>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-correct="0">
+      <p>3. Why does "Your kids won't remember the gifts — they'll remember the table" hit hard?</p>
+      <button class="opt">It pulls loss aversion + self-relevance and is concrete.</button>
+      <button class="opt">It's long and explains everything.</button>
+      <button class="opt">It names the ministry early.</button>
+      <div class="fb"></div>
+    </div>
+  </div>
+
+  <!-- TASK -->
+  <div class="task">
+    <h2>🎯 Your win this session</h2>
+    <ol>
+      <li>Pick <strong>one real clip</strong> — a 20–40s moment from a sermon or talk you already have.</li>
+      <li>Write <strong>5 hooks</strong> for it, each pulling a different trigger. Run each through the Hook Lab; get 2 of them to 4+.</li>
+      <li><strong>Bring your 5 hooks back to me in the chat.</strong> I'll give you line-by-line feedback
+        and we'll pick the one to post first.</li>
+    </ol>
+    <p style="margin-bottom:0">That's the loop: write → score → my feedback → post → check 3-second
+    retention → repeat. Do it weekly and hooks stop being guesswork.</p>
+  </div>
+
+  <div class="ask">
+    💬 <strong>I'm your teacher — use me.</strong> Stuck on a clip? Not sure which trigger fits your
+    message? Want me to draft 10 hooks from one sermon paragraph? Just paste it in the chat and ask.
+    No question is too small.
+  </div>
+
+  <h2>What's next</h2>
+  <p>Once your hooks are landing, Lesson 0002 moves to the <strong>retain</strong> stage: turning the
+  people who watch into a following you actually <em>own</em> (not rented from the algorithm). But
+  hooks first — nothing downstream matters if no one stops scrolling.</p>
+
+  <footer>
+    <p><strong>Reference shelf:</strong>
+      <a href="../reference/hook-library.html">Hook Library</a> ·
+      <a href="../reference/online-ministry-funnel.html">The Funnel</a> ·
+      <a href="../reference/glossary.html">Glossary</a></p>
+    <p class="nav-next">Lesson 0002 — Retain (coming when you're ready) →</p>
+    <p>Sources used:
+      <a href="https://www.opus.pro/blog/tiktok-hook-formulas">OpusClip</a> ·
+      <a href="https://hookpoint.com/hook-point-book/">Kane, <em>Hook Point</em></a> ·
+      <a href="https://www.admove.ai/blog/social-media-hooks-guide">Admove</a> ·
+      <a href="https://www.storyboxhq.ca/post/the-psychology-of-short-form-video-why-hooks-curiosity-and-creativity-drive-conversions">StoryBox (psychology)</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // ---- Hook Lab scoring ----
+  var input = document.getElementById('hookInput');
+  var readout = document.getElementById('readout');
+  var checksEl = document.getElementById('checks');
+  var tagsEl = document.getElementById('tags');
+  var scoreNum = document.getElementById('scoreNum');
+
+  var triggers = {
+    'Curiosity gap': ["nobody tells","what if","the one","the real","secret","reason why","here's why","here's what","you've","didn't know","won't tell","actually","truth about","what nobody"],
+    'Pattern interrupt': ["isn't","is not","stop ","instead","unpopular","wrong","not the","never the","forget everything","everyone thinks"],
+    'Self-relevance': ["you ","your ","if you","parents","anyone who","for anyone","for everyone who"],
+    'Emotion / loss': ["won't remember","won't","never","almost","cost","lose","lost","don't wait","afraid","broken","fear","starving","missing","too late","before it's"]
+  };
+  var vague = ["things","stuff","important","good","better","nice","stuff","spend time","spending time","a lot","interesting","topic","talk about","in this video","today we"];
+
+  function analyze(text){
+    var t = text.trim().toLowerCase();
+    var words = t.length ? t.split(/\s+/).length : 0;
+    var sec = (words/2.5);
+    // triggers found
+    var found = [];
+    for(var k in triggers){
+      if(triggers[k].some(function(p){return t.indexOf(p)>-1;})) found.push(k);
+    }
+    // specificity: penalize vague phrases, reward concrete signal (a capitalized noun, a number, or quote-y specifics)
+    var vagueHits = vague.filter(function(v){return t.indexOf(v)>-1;});
+    var hasNumber = /\d/.test(t);
+    var concrete = hasNumber || /\b(table|dinner|marriage|son|daughter|kids|verse|genesis|home|wife|husband|father|mother|bedroom|phone|sunday)\b/.test(t);
+    return {words:words, sec:sec, found:found, vagueHits:vagueHits, concrete:concrete};
+  }
+
+  function render(){
+    var v = input.value;
+    if(!v.trim()){ readout.style.display='none'; return; }
+    readout.style.display='block';
+    var a = analyze(v);
+    var rows = [];
+    var score = 0;
+
+    // 1 length
+    if(a.words>0 && a.words<=12){ score++; rows.push(['ok','Short enough','~'+a.sec.toFixed(1)+'s to say · '+a.words+' words']); }
+    else if(a.words<=15){ rows.push(['mid','A touch long','~'+a.words+' words — trim toward 12 or fewer']); }
+    else { rows.push(['no','Too long','~'+a.words+' words — a hook is one breath, not a sentence stack']); }
+
+    // 2 trigger
+    if(a.found.length>=2){ score++; rows.push(['ok','Stacks '+a.found.length+' triggers','That’s the pro move']); }
+    else if(a.found.length===1){ score++; rows.push(['ok','Pulls a trigger',a.found[0]]); }
+    else { rows.push(['no','No clear trigger','Add curiosity, a contradiction, a "you", or a real stake']); }
+
+    // 3 specific
+    if(a.vagueHits.length===0 && a.concrete){ score++; rows.push(['ok','Concrete & specific','Names something real']); }
+    else if(a.vagueHits.length===0){ score++; rows.push(['mid','Not vague — but go more concrete','Swap an abstract noun for a real image (the table, the verse, Sunday)']); }
+    else { rows.push(['no','Too vague','Replace: '+a.vagueHits.join(', ')]); }
+
+    // 4 reminder (always neutral, not scored to avoid false confidence) -> we DO award if not obviously bait
+    rows.push(['mid','True to the clip? (you decide)','The video MUST deliver this promise']);
+
+    // 5 mute reminder
+    rows.push(['mid','Put this on screen as text','60%+ watch on mute — say it AND show it in the first 2s']);
+
+    // allow max 5: length, trigger, specific = up to 3 auto; give bonus 2 if those 3 all pass (well-formed)
+    if(score===3) score = 5; // a hook passing all three hard checks is post-ready
+    else if(score===2) score = Math.max(score,3);
+
+    scoreNum.textContent = score;
+    scoreNum.style.color = score>=4 ? 'var(--good)' : score>=3 ? 'var(--warn)' : 'var(--bad)';
+
+    checksEl.innerHTML = rows.map(function(r){
+      return '<li class="'+r[0]+'"><strong>'+r[1]+'</strong><small>'+r[2]+'</small></li>';
+    }).join('');
+
+    tagsEl.innerHTML = a.found.length
+      ? 'Triggers detected: '+a.found.map(function(f){return '<span class="tag">'+f+'</span>';}).join('')
+      : '<span class="hint">No triggers detected yet — peek at the Hook Library for formulas.</span>';
+  }
+  input.addEventListener('input', render);
+
+  // ---- Quiz ----
+  document.querySelectorAll('.q').forEach(function(q){
+    var correct = parseInt(q.getAttribute('data-correct'),10);
+    var opts = q.querySelectorAll('.opt');
+    var fb = q.querySelector('.fb');
+    opts.forEach(function(opt,i){
+      opt.addEventListener('click',function(){
+        opts.forEach(function(o){o.disabled=true;});
+        if(i===correct){ opt.classList.add('correct'); fb.textContent='Correct. '; }
+        else { opt.classList.add('wrong'); opts[correct].classList.add('correct'); fb.textContent='Not quite — the highlighted answer is the one. '; }
+        fb.style.display='block';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
